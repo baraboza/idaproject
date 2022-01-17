@@ -1,0 +1,45 @@
+html {
+  box-sizing: border-box;
+  -ms-overflow-style: scrollbar;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  min-width: 320px;
+  position: relative;
+  overflow-x: hidden;
+  background: #faf9f7;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 16px;
+  color: #3f3f3f;
+}
+
+img,
+svg,
+iframe {
+  max-width: 100%;
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+  color: #3f3f3f;
+}
+
+button {
+  cursor: pointer;
+}
+
+.visually-hidden {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+}

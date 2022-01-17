@@ -1,0 +1,29 @@
+$gutter: 16px;
+
+.grid {
+  &-container {
+    max-width: 1440px;
+    padding: 0 32px;
+    margin: 0 auto;
+  }
+  
+  &-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 math.div($gutter, -2);
+  }
+
+  &-col {
+    flex: 0 0 auto;
+    padding: 0 math.div($gutter, 2);
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    &-container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+}
