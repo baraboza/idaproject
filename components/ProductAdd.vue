@@ -58,6 +58,10 @@
         Добавить товар
       </button>
     </form>
+    <p class="success-message">
+      <img src="/images/check.svg" alt="">
+      Товар успешно добавлен!
+    </p>
   </div>
 </template>
 
@@ -286,6 +290,20 @@ export default {
     color: #B4B4B4;
     box-shadow: none;
     pointer-events: none;
+  }
+}
+
+.success-message {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7BAE73;
+
+  img {
+    width: 20px;
+    flex-shrink: 0;
+    margin-right: 8px;
   }
 }
 
