@@ -2,32 +2,30 @@
   <div class="container grid-container">
     <div class="grid-row">
       <div class="col-form grid-col">
-        <ProductAdd />
+        <ProductAdd
+          @submit="addItem"
+        />
       </div>
       <div class="col-list grid-col">
         <div class="sort">
           <SelectComponent />
         </div>
-        <ul class="list grid-row">
-          <li class="item grid-col">
-            <ProductItem />
+
+        <transition-group
+          name="item"
+          tag="ul"
+          class="list grid-row"
+        >
+          <li
+            v-for="(item, index) in items"
+            :key="'product' + index"
+            class="item grid-col"
+          >
+            <ProductItem
+              :data="item"
+            />
           </li>
-          <li class="item grid-col">
-            <ProductItem />
-          </li>
-          <li class="item grid-col">
-            <ProductItem />
-          </li>
-          <li class="item grid-col">
-            <ProductItem />
-          </li>
-          <li class="item grid-col">
-            <ProductItem />
-          </li>
-          <li class="item grid-col">
-            <ProductItem />
-          </li>
-        </ul>
+        </transition-group>
       </div>
     </div>
   </div>
@@ -35,7 +33,24 @@
 
 <script>
 export default {
+  data () {
+    return {
+      items: [
+        {
+          title: 'Наименование товара',
+          description: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
+          image: '/images/product.jpg',
+          price: '10 000'
+        }
+      ]
+    }
+  },
 
+  methods: {
+    addItem (product) {
+      this.items.push(product)
+    }
+  }
 }
 </script>
 
@@ -65,6 +80,18 @@ export default {
 .item {
   margin-top: 16px;
   width: math.div(100%, 3);
+
+  &-enter-active,
+  &-leave-active {
+    transition-property: opacity, transform;
+    transition-duration: .5s;
+  }
+
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
+  }
 }
 
 @media (max-width: 1200px) {

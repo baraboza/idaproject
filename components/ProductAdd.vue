@@ -3,38 +3,177 @@
     <p class="title">
       Добавление товара
     </p>
-    <form class="form">
-      <div class="form-row">
-        <label for="product-title" class="is-required">Наименование товара</label>
-        <input id="product-title" type="text" placeholder="Введите наименование товара">
+    <form
+      class="form"
+      @submit="onSubmit"
+    >
+      <div
+        v-for="(field, key) in fields"
+        :key="key"
+        class="form-row"
+      >
+        <label
+          :for="'product-' + key"
+          :class="{
+            'is-required': field.required
+          }"
+        >
+          {{ field.label }}
+        </label>
+
+        <input
+          v-if="field.element === 'input'"
+          :id="'product-' + key"
+          v-model="field.value"
+          :class="{
+            'has-error': field.error
+          }"
+          type="text"
+          :placeholder="field.placeholder"
+          autocomplete="off"
+          @keydown="field.onKeyDown && field.onKeyDown($event)"
+          @input="field.onInput && field.onInput(field)"
+          @blur="validation(field)"
+        >
+
+        <textarea
+          v-else-if="field.element === 'textarea'"
+          :id="'product-' + key"
+          v-model="field.value"
+          :placeholder="field.placeholder"
+        />
+
+        <span
+          v-if="field.error"
+          class="error"
+        >
+          {{ field.errorText }}
+        </span>
       </div>
 
-      <div class="form-row">
-        <label for="product-description">Описание товара</label>
-        <textarea id="product-description" placeholder="Введите описание товара" />
-      </div>
-
-      <div class="form-row">
-        <label for="product-title" class="is-required">Ссылка на изображение товара</label>
-        <input id="product-title" type="text" placeholder="Введите ссылку" class="has-error">
-        <span class="error">Поле является обязательным</span>
-      </div>
-
-      <div class="form-row">
-        <label for="product-title" class="is-required">Цена товара</label>
-        <input id="product-title" type="text" placeholder="Введите цену">
-      </div>
-
-      <button type="submit" class="button-submit" disabled>
+      <button
+        type="submit"
+        class="button-submit"
+        :disabled="disabledSubmit"
+      >
         Добавить товар
       </button>
     </form>
+    <transition name="fade">
+      <p
+        v-if="showSuccess"
+        class="success-message"
+      >
+        <img src="/images/check.svg" alt="">
+        Товар успешно добавлен!
+      </p>
+    </transition>
   </div>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      showSuccess: false,
+      fields: {
+        title: {
+          label: 'Наименование товара',
+          placeholder: 'Введите наименование товара',
+          element: 'input',
+          value: '',
+          required: true,
+          error: false,
+          errorText: ''
+        },
+        description: {
+          label: 'Описание товара',
+          placeholder: 'Введите описание товара',
+          element: 'textarea',
+          value: '',
+          required: false,
+          error: false,
+          errorText: ''
+        },
+        image: {
+          label: 'Ссылка на изображение товара',
+          placeholder: 'Введите ссылку',
+          element: 'input',
+          value: '',
+          required: true,
+          error: false,
+          errorText: ''
+        },
+        price: {
+          label: 'Цена товара',
+          placeholder: 'Введите цену',
+          element: 'input',
+          value: '',
+          required: true,
+          error: false,
+          errorText: '',
+          onKeyDown: (e) => {
+            const key = e.key
+            const cond = (
+              (key >= '0' && key <= '9') ||
+              key === 'ArrowLeft' || key === 'ArrowRight' ||
+              key === 'Delete' || key === 'Backspace' ||
+              key === 'Enter'
+            )
 
+            if (!cond) {
+              e.preventDefault()
+            }
+          },
+          onInput: (field) => {
+            field.value = field.value
+              .replaceAll(' ', '')
+              .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+          }
+        }
+      }
+    }
+  },
+
+  computed: {
+    disabledSubmit () {
+      return Object.values(this.fields)
+        .some(field => field.error || (field.required && !field.value))
+    }
+  },
+
+  methods: {
+    validation (field) {
+      if (!field.required) {
+        return
+      }
+
+      if (field.value === '') {
+        field.error = true
+        field.errorText = 'Поле является обязательным'
+      } else {
+        field.error = false
+        field.errorText = ''
+      }
+    },
+
+    onSubmit (e) {
+      e.preventDefault()
+      const product = {}
+
+      Object.entries(this.fields).forEach((item) => {
+        product[item[0]] = item[1].value
+        item[1].value = ''
+      })
+
+      this.$emit('submit', product)
+
+      this.showSuccess = true
+      setTimeout(() => {
+        this.showSuccess = false
+      }, 2000)
+    }
+  }
 }
 </script>
 
@@ -163,6 +302,20 @@ export default {
     color: #B4B4B4;
     box-shadow: none;
     pointer-events: none;
+  }
+}
+
+.success-message {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7BAE73;
+
+  img {
+    width: 20px;
+    flex-shrink: 0;
+    margin-right: 8px;
   }
 }
 
