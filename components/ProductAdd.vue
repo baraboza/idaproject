@@ -27,18 +27,16 @@
           }"
           type="text"
           :placeholder="field.placeholder"
-          @change="validation(field)"
+          @keydown="field.onKeyDown && field.onKeyDown($event)"
+          @input="field.onInput && field.onInput(field)"
+          @blur="validation(field)"
         >
 
         <textarea
           v-else-if="field.element === 'textarea'"
           :id="'product-' + key"
           v-model="field.value"
-          :class="{
-            'has-error': field.error
-          }"
           :placeholder="field.placeholder"
-          @change="validation(field)"
         />
 
         <span
@@ -99,7 +97,25 @@ export default {
           value: '',
           required: true,
           error: false,
-          errorText: ''
+          errorText: '',
+          onKeyDown: (e) => {
+            const key = e.key
+            const cond = (
+              (key >= '0' && key <= '9') ||
+              key === 'ArrowLeft' || key === 'ArrowRight' ||
+              key === 'Delete' || key === 'Backspace'
+            )
+
+            if (!cond) {
+              e.preventDefault()
+            }
+          },
+          onInput: (field) => {
+            console.log(field.value)
+            field.value = field.value
+              .replaceAll(' ', '')
+              .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+          }
         }
       }
     }
