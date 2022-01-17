@@ -4,28 +4,56 @@
       Добавление товара
     </p>
     <form class="form">
-      <div class="form-row">
-        <label for="product-title" class="is-required">Наименование товара</label>
-        <input id="product-title" type="text" placeholder="Введите наименование товара">
+      <div
+        v-for="(field, key) in fields"
+        :key="key"
+        class="form-row"
+      >
+        <label
+          :for="'product-' + key"
+          :class="{
+            'is-required': field.required
+          }"
+        >
+          {{ field.label }}
+        </label>
+
+        <input
+          v-if="field.element === 'input'"
+          :id="'product-' + key"
+          v-model="field.value"
+          :class="{
+            'has-error': field.error
+          }"
+          type="text"
+          :placeholder="field.placeholder"
+          @change="validation(field)"
+        >
+
+        <textarea
+          v-else-if="field.element === 'textarea'"
+          :id="'product-' + key"
+          v-model="field.value"
+          :class="{
+            'has-error': field.error
+          }"
+          :placeholder="field.placeholder"
+          @change="validation(field)"
+        />
+
+        <span
+          v-if="field.error"
+          class="error"
+        >
+          {{ field.errorText }}
+        </span>
       </div>
 
-      <div class="form-row">
-        <label for="product-description">Описание товара</label>
-        <textarea id="product-description" placeholder="Введите описание товара" />
-      </div>
-
-      <div class="form-row">
-        <label for="product-title" class="is-required">Ссылка на изображение товара</label>
-        <input id="product-title" type="text" placeholder="Введите ссылку" class="has-error">
-        <span class="error">Поле является обязательным</span>
-      </div>
-
-      <div class="form-row">
-        <label for="product-title" class="is-required">Цена товара</label>
-        <input id="product-title" type="text" placeholder="Введите цену">
-      </div>
-
-      <button type="submit" class="button-submit" disabled>
+      <button
+        type="submit"
+        class="button-submit"
+        :disabled="disabledSubmit"
+      >
         Добавить товар
       </button>
     </form>
@@ -34,7 +62,71 @@
 
 <script>
 export default {
+  data () {
+    return {
+      fields: {
+        title: {
+          label: 'Наименование товара',
+          placeholder: 'Введите наименование товара',
+          element: 'input',
+          value: '',
+          required: true,
+          error: false,
+          errorText: ''
+        },
+        description: {
+          label: 'Описание товара',
+          placeholder: 'Введите описание товара',
+          element: 'textarea',
+          value: '',
+          required: false,
+          error: false,
+          errorText: ''
+        },
+        image: {
+          label: 'Ссылка на изображение товара',
+          placeholder: 'Введите ссылку',
+          element: 'input',
+          value: '',
+          required: true,
+          error: false,
+          errorText: ''
+        },
+        price: {
+          label: 'Цена товара',
+          placeholder: 'Введите цену',
+          element: 'input',
+          value: '',
+          required: true,
+          error: false,
+          errorText: ''
+        }
+      }
+    }
+  },
 
+  computed: {
+    disabledSubmit () {
+      return Object.values(this.fields)
+        .some(field => field.error || (field.required && !field.value))
+    }
+  },
+
+  methods: {
+    validation (field) {
+      if (!field.required) {
+        return
+      }
+
+      if (field.value === '') {
+        field.error = true
+        field.errorText = 'Поле является обязательным'
+      } else {
+        field.error = false
+        field.errorText = ''
+      }
+    }
+  }
 }
 </script>
 
