@@ -1,12 +1,21 @@
 <template>
   <div class="box">
     <div class="img-box">
-      <img src="/images/product.jpg" alt="Наименование товара">
+      <img
+        :src="data.image"
+        :alt="data.title"
+      >
     </div>
     <div class="content">
-      <p class="title">Наименование товара</p>
-      <p class="description">Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк</p>
-      <p class="price">10 000 руб.</p>
+      <p class="title">
+        {{ data.title }}
+      </p>
+      <p class="description">
+        {{ data.description }}
+      </p>
+      <p class="price">
+        {{ data.price }} руб.
+      </p>
     </div>
     <button type="button" class="button-delete">
       <img src="/images/delete.svg" alt="">
@@ -16,7 +25,14 @@
 
 <script>
 export default {
-
+  props: {
+    data: {
+      type: Object,
+      default () {
+        return {}
+      }
+    }
+  }
 }
 </script>
 

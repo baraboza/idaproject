@@ -3,7 +3,10 @@
     <p class="title">
       Добавление товара
     </p>
-    <form class="form">
+    <form
+      class="form"
+      @submit="onSubmit"
+    >
       <div
         v-for="(field, key) in fields"
         :key="key"
@@ -103,7 +106,8 @@ export default {
             const cond = (
               (key >= '0' && key <= '9') ||
               key === 'ArrowLeft' || key === 'ArrowRight' ||
-              key === 'Delete' || key === 'Backspace'
+              key === 'Delete' || key === 'Backspace' ||
+              key === 'Enter'
             )
 
             if (!cond) {
@@ -111,7 +115,6 @@ export default {
             }
           },
           onInput: (field) => {
-            console.log(field.value)
             field.value = field.value
               .replaceAll(' ', '')
               .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
@@ -141,6 +144,18 @@ export default {
         field.error = false
         field.errorText = ''
       }
+    },
+
+    onSubmit (e) {
+      e.preventDefault()
+      const product = {}
+
+      Object.entries(this.fields).forEach((item) => {
+        product[item[0]] = item[1].value
+        item[1].value = ''
+      })
+
+      this.$emit('submit', product)
     }
   }
 }

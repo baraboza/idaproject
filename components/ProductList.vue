@@ -2,30 +2,23 @@
   <div class="container grid-container">
     <div class="grid-row">
       <div class="col-form grid-col">
-        <ProductAdd />
+        <ProductAdd
+          @submit="addItem"
+        />
       </div>
       <div class="col-list grid-col">
         <div class="sort">
           <SelectComponent />
         </div>
         <ul class="list grid-row">
-          <li class="item grid-col">
-            <ProductItem />
-          </li>
-          <li class="item grid-col">
-            <ProductItem />
-          </li>
-          <li class="item grid-col">
-            <ProductItem />
-          </li>
-          <li class="item grid-col">
-            <ProductItem />
-          </li>
-          <li class="item grid-col">
-            <ProductItem />
-          </li>
-          <li class="item grid-col">
-            <ProductItem />
+          <li
+            v-for="(item, index) in items"
+            :key="index"
+            class="item grid-col"
+          >
+            <ProductItem
+              :data="item"
+            />
           </li>
         </ul>
       </div>
@@ -35,7 +28,24 @@
 
 <script>
 export default {
+  data () {
+    return {
+      items: [
+        {
+          title: 'Наименование товара',
+          description: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
+          image: '/images/product.jpg',
+          price: '10 000'
+        }
+      ]
+    }
+  },
 
+  methods: {
+    addItem (product) {
+      this.items.push(product)
+    }
+  }
 }
 </script>
 
