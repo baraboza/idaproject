@@ -10,17 +10,22 @@
         <div class="sort">
           <SelectComponent />
         </div>
-        <ul class="list grid-row">
+
+        <transition-group
+          name="item"
+          tag="ul"
+          class="list grid-row"
+        >
           <li
             v-for="(item, index) in items"
-            :key="index"
+            :key="'product' + index"
             class="item grid-col"
           >
             <ProductItem
               :data="item"
             />
           </li>
-        </ul>
+        </transition-group>
       </div>
     </div>
   </div>
@@ -75,6 +80,18 @@ export default {
 .item {
   margin-top: 16px;
   width: math.div(100%, 3);
+
+  &-enter-active,
+  &-leave-active {
+    transition-property: opacity, transform;
+    transition-duration: .5s;
+  }
+
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
+  }
 }
 
 @media (max-width: 1200px) {
