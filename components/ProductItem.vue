@@ -103,6 +103,22 @@ export default {
   border: none;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s;
+  transition-property: opacity, transform, box-shadow;
+  transition-duration: 0.3s;
+
+  &:focus {
+    opacity: 1;
+    pointer-events: auto;
+    outline: none;
+  }
+
+  &:focus,
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:active {
+    box-shadow: none;
+  }
 }
 </style>

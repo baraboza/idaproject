@@ -95,6 +95,12 @@ export default {
       font-size: 12px;
       line-height: 15px;
       padding: 9px 15px 10px;
+      transition: border-color 0.3s;
+
+      &:focus {
+        border-color: rgba(0, 0, 0, 0.1);
+        outline: none;
+      }
 
       &.has-error {
         border-color: #FF8484;
@@ -139,12 +145,24 @@ export default {
   padding: 10px 16px 11px;
   border: none;
   width: 100%;
+  transition-property: background, box-shadow;
+  transition-duration: 0.3s;
+
+  &:hover,
+  &:focus {
+    background: #7b9d76;
+    outline: none;
+  }
+
+  &:active {
+    box-shadow: none;
+  }
 
   &:disabled {
     background: #EEEEEE;
     color: #B4B4B4;
     box-shadow: none;
-    cursor: default;
+    pointer-events: none;
   }
 }
 </style>

@@ -36,6 +36,18 @@ export default {
   border: 1px solid #FFFEFB;
   padding: 9px 15px 10px;
   cursor: pointer;
+  transition-property: border-color, box-shadow;
+  transition-duration: 0.3s;
+
+  &:hover,
+  &:focus {
+    border-color: rgba(0, 0, 0, 0.1);
+    outline: none;
+  }
+
+  &:active {
+    box-shadow: none;
+  }
 
   &.is-default {
     color: #B4B4B4;
@@ -59,7 +71,6 @@ export default {
   border-radius: 4px;
   background: #FFFEFB;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  border: 1px solid #FFFEFB;
   top: 100%;
   margin-top: 5px;
   left: 0;
@@ -68,5 +79,13 @@ export default {
 }
 .item {
   padding: 5px 15px;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover,
+  &:focus {
+    background: rgba(0, 0, 0, 0.05);
+    outline: none;
+  }
 }
 </style>
