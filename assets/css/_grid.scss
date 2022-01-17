@@ -18,3 +18,12 @@ $gutter: 16px;
     padding: 0 math.div($gutter, 2);
   }
 }
+
+@media (max-width: 600px) {
+  .grid {
+    &-container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+}

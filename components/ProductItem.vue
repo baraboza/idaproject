@@ -121,4 +121,34 @@ export default {
     box-shadow: none;
   }
 }
+
+@media (max-width: 600px) {
+  .content {
+    padding-bottom: 20px;
+  }
+
+  .title {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .description {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .price {
+    margin-top: 16px;
+    font-size: 22px;
+    line-height: 26px;
+  }
+
+  .button-delete {
+    opacity: 1;
+    pointer-events: auto;
+    top: 8px;
+    right: 8px;
+  }
+}
 </style>

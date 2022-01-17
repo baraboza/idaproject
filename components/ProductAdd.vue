@@ -165,4 +165,19 @@ export default {
     pointer-events: none;
   }
 }
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .form {
+    padding: 16px;
+  }
+
+  .button-submit {
+    margin-top: 20px;
+  }
+}
 </style>

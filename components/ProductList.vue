@@ -66,4 +66,44 @@ export default {
   margin-top: 16px;
   width: math.div(100%, 3);
 }
+
+@media (max-width: 1200px) {
+  .col {
+    &-form {
+      width: math.div(100% * 6, 16);
+    }
+
+    &-list {
+      width: math.div(100% * 10, 16);
+    }
+  }
+
+  .item {
+    width: 50%;
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+
+  .col {
+    &-form,
+    &-list {
+      width: 100%;
+    }
+
+    &-list {
+      margin-top: 32px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .item {
+    width: 100%;
+  }
+}
 </style>
