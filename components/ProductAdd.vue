@@ -30,6 +30,7 @@
           }"
           type="text"
           :placeholder="field.placeholder"
+          autocomplete="off"
           @keydown="field.onKeyDown && field.onKeyDown($event)"
           @input="field.onInput && field.onInput(field)"
           @blur="validation(field)"
@@ -58,10 +59,15 @@
         Добавить товар
       </button>
     </form>
-    <p class="success-message">
-      <img src="/images/check.svg" alt="">
-      Товар успешно добавлен!
-    </p>
+    <transition name="fade">
+      <p
+        v-if="showSuccess"
+        class="success-message"
+      >
+        <img src="/images/check.svg" alt="">
+        Товар успешно добавлен!
+      </p>
+    </transition>
   </div>
 </template>
 
@@ -69,6 +75,7 @@
 export default {
   data () {
     return {
+      showSuccess: false,
       fields: {
         title: {
           label: 'Наименование товара',
@@ -160,6 +167,11 @@ export default {
       })
 
       this.$emit('submit', product)
+
+      this.showSuccess = true
+      setTimeout(() => {
+        this.showSuccess = false
+      }, 2000)
     }
   }
 }
