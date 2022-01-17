@@ -37,24 +37,34 @@
 export default {
   data () {
     return {
-      items: [
-        {
-          title: 'Наименование товара',
-          description: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
-          image: '/images/product.jpg',
-          price: '10 000'
-        }
-      ]
+      items: []
+    }
+  },
+
+  mounted () {
+    if (localStorage.getItem('productList')) {
+      try {
+        this.items = JSON.parse(localStorage.getItem('productList'))
+      } catch (e) {
+        localStorage.removeItem('productList')
+      }
     }
   },
 
   methods: {
     addItem (product) {
       this.items.push(product)
+      this.saveItems()
     },
 
     removeItem (index) {
       this.items.splice(index, 1)
+      this.saveItems()
+    },
+
+    saveItems () {
+      const parsed = JSON.stringify(this.items)
+      localStorage.setItem('productList', parsed)
     }
   }
 }
