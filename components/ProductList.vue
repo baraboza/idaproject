@@ -18,11 +18,13 @@
         >
           <li
             v-for="(item, index) in items"
-            :key="'product' + index"
+            :key="item.title"
             class="item grid-col"
           >
             <ProductItem
+              :index="index"
               :data="item"
+              @remove="removeItem"
             />
           </li>
         </transition-group>
@@ -49,6 +51,10 @@ export default {
   methods: {
     addItem (product) {
       this.items.push(product)
+    },
+
+    removeItem (index) {
+      this.items.splice(index, 1)
     }
   }
 }

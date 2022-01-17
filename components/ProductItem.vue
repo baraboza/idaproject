@@ -17,7 +17,11 @@
         {{ data.price }} руб.
       </p>
     </div>
-    <button type="button" class="button-delete">
+    <button
+      type="button"
+      class="button-delete"
+      @click="remove"
+    >
       <img src="/images/delete.svg" alt="">
     </button>
   </div>
@@ -26,10 +30,22 @@
 <script>
 export default {
   props: {
+    index: {
+      type: Number,
+      default: -1
+    },
     data: {
       type: Object,
       default () {
         return {}
+      }
+    }
+  },
+
+  methods: {
+    remove () {
+      if (this.index >= 0) {
+        this.$emit('remove', this.index)
       }
     }
   }
