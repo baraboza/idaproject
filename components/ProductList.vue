@@ -8,7 +8,23 @@
       </div>
       <div class="col-list grid-col">
         <div class="sort">
-          <SelectComponent />
+          <SelectComponent
+            v-model="sort"
+            :items="[
+              {
+                value: 'price-asc',
+                text: 'По возрастанию цены'
+              },
+              {
+                value: 'price-desc',
+                text: 'По убыванию цены'
+              },
+              {
+                value: 'title',
+                text: 'По наименованию'
+              }
+            ]"
+          />
         </div>
 
         <transition-group
@@ -17,7 +33,7 @@
           class="list grid-row"
         >
           <li
-            v-for="(item, index) in items"
+            v-for="(item, index) in sortedItems"
             :key="item.title"
             class="item grid-col"
           >
@@ -37,7 +53,31 @@
 export default {
   data () {
     return {
+      sort: '',
       items: []
+    }
+  },
+
+  computed: {
+    sortedItems () {
+      const methods = {
+        title: (a, b) => {
+          return a.title.localeCompare(b.title, ['ru', 'en'])
+        },
+        'price-asc': (a, b) => {
+          return +a.price.replaceAll(' ', '') - +b.price.replaceAll(' ', '')
+        }
+      }
+
+      methods['price-desc'] = (a, b) => {
+        return -1 * methods['price-asc'](a, b)
+      }
+
+      if (!this.sort || !methods[this.sort]) {
+        return this.items
+      }
+
+      return [...this.items].sort(methods[this.sort])
     }
   },
 

@@ -1,23 +1,94 @@
 <template>
   <div class="wrap">
-    <input type="hidden" value="">
-    <button type="button" class="button is-default">
-      <span>По умолчанию</span>
-      <svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M7.48532 1.24264L4.24268 4.48528L1.00003 1.24264" stroke="#B4B4B4"/>
+    <input
+      type="hidden"
+      :value="value"
+    >
+    <button
+      type="button"
+      class="button"
+      :class="{
+        'is-default': !value
+      }"
+      @click="showList = !showList"
+    >
+      <span>
+        {{ buttonText }}
+      </span>
+      <svg
+        width="8"
+        height="6"
+        viewBox="0 0 8 6"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        :class="{
+          'is-rotate': showList
+        }"
+      >
+        <path d="M7.48532 1.24264L4.24268 4.48528L1.00003 1.24264" stroke="#B4B4B4" />
       </svg>
     </button>
-    <ul class="list has-aling-right">
-      <li class="item" tabindex="0">По возрастанию цены</li>
-      <li class="item" tabindex="0">По убыванию цены</li>
-      <li class="item" tabindex="0">По наименованию</li>
-    </ul>
+    <transition name="fade">
+      <ul
+        v-show="showList"
+        class="list"
+      >
+        <li
+          v-for="(item, index) in items"
+          :key="index"
+          class="item"
+          tabindex="0"
+          @click="onItemClick(item.value)"
+        >
+          {{ item.text }}
+        </li>
+      </ul>
+    </transition>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    placeholder: {
+      type: String,
+      default: 'По умолчанию'
+    },
+    value: {
+      type: String,
+      default: ''
+    },
+    items: {
+      type: Array,
+      default () {
+        return []
+      }
+    }
+  },
 
+  data () {
+    return {
+      showList: false
+    }
+  },
+
+  computed: {
+    buttonText () {
+      if (this.value) {
+        const item = this.items.find(item => item.value === this.value)
+        return item.text
+      } else {
+        return this.placeholder
+      }
+    }
+  },
+
+  methods: {
+    onItemClick (value) {
+      this.$emit('input', value)
+      this.showList = false
+    }
+  }
 }
 </script>
 
@@ -62,10 +133,14 @@ export default {
   svg {
     margin-left: 5px;
     flex-shrink: 0;
+    transition: transform 0.3s;
+
+    &.is-rotate {
+      transform: rotate(180deg);
+    }
   }
 }
 .list {
-  display: none;
   position: absolute;
   z-index: 2;
   border-radius: 4px;
