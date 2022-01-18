@@ -97,9 +97,13 @@ export default {
       this.saveItems()
     },
 
-    removeItem (index) {
-      this.items.splice(index, 1)
-      this.saveItems()
+    removeItem (product) {
+      const index = this.items.findIndex(item => item === product)
+
+      if (index >= 0) {
+        this.items.splice(index, 1)
+        this.saveItems()
+      }
     },
 
     saveItems () {
