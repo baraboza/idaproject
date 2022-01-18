@@ -20,7 +20,7 @@
     <button
       type="button"
       class="button-delete"
-      @click="remove"
+      @click="$emit('remove', data)"
     >
       <img src="/images/delete.svg" alt="">
     </button>
@@ -38,14 +38,6 @@ export default {
       type: Object,
       default () {
         return {}
-      }
-    }
-  },
-
-  methods: {
-    remove () {
-      if (this.index >= 0) {
-        this.$emit('remove', this.index)
       }
     }
   }
